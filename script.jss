@@ -48,14 +48,25 @@ function makeVoiceCard(item, index, compact = false) {
 function renderVoices() {
   const timeline = document.getElementById("timeline-grid");
   const side = document.getElementById("video-event-list");
-  if (!timeline || !side) return;
 
-  voices.forEach((item, index) => {
-    timeline.appendChild(makeVoiceCard(item, index));
-    if (item.seconds !== null || item.tree) {
-      side.appendChild(makeVoiceCard(item, index, true));
-    }
-  });
+  // VIDEO側の発言一覧が存在する場合は、必ず表示する
+  if (side) {
+    side.innerHTML = "";
+
+    voices.forEach((item, index) => {
+      const card = makeVoiceCard(item, index, true);
+      side.appendChild(card);
+    });
+  }
+
+  // タイムライン用のグリッドが存在する場合だけ作成する
+  if (timeline) {
+    timeline.innerHTML = "";
+
+    voices.forEach((item, index) => {
+      timeline.appendChild(makeVoiceCard(item, index));
+    });
+  }
 }
 
 function selectVoice(index) {
